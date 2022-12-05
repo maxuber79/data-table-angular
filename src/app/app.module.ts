@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { DataTablesModule } from 'angular-datatables';
 
@@ -10,8 +12,10 @@ import { AppComponent } from './app.component';
     AppComponent
   ],
   imports: [
+		CommonModule,
     BrowserModule,
     AppRoutingModule,
+		HttpClientModule,
 		DataTablesModule
   ],
   providers: [],
