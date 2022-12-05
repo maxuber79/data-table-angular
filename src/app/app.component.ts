@@ -7,4 +7,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'testDataTable';
+	dtOptions: DataTables.Settings = {};
+
+	ngOnInit(): void {
+    this.dtOptions = {
+      pagingType: 'full_numbers'
+    };
+  }
 }
