@@ -1,77 +1,92 @@
 <div class="container">
 	<div class="row">
-		<div class="col-12 p-3 mt-5" style="border: 1px dashed red;">
-			<table datatable [dtOptions]="dtOptions" class="table row-border hover">
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th>First name</th>
-						<th>Last name</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>1</td>
-						<td>Foo</td>
-						<td>Bar</td>
-					</tr>
-					<tr>
-						<td>2</td>
-						<td>Someone</td>
-						<td>Youknow</td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td>Iamout</td>
-						<td>Ofinspiration</td>
-					</tr>
-					<tr>
-						<td>4</td>
-						<td>Yoda</td>
-						<td>Skywalker</td>
-					</tr>
-					<tr>
-						<td>5</td>
-						<td>Patrick</td>
-						<td>Dupont</td>
-					</tr>
-					<tr>
-						<td>6</td>
-						<td>Barack</td>
-						<td>Obama</td>
-					</tr>
-					<tr>
-						<td>7</td>
-						<td>François</td>
-						<td>Holland</td>
-					</tr>
-					<tr>
-						<td>8</td>
-						<td>Michel</td>
-						<td>Popo</td>
-					</tr>
-					<tr>
-						<td>9</td>
-						<td>Chuck</td>
-						<td>Norris</td>
-					</tr>
-					<tr>
-						<td>10</td>
-						<td>Simon</td>
-						<td>Robin</td>
-					</tr>
-					<tr>
-						<td>11</td>
-						<td>Louis</td>
-						<td>Lin</td>
-					</tr>
-					<tr>
-						<td>12</td>
-						<td>Zelda</td>
-						<td>Link</td>
-					</tr>
-				</tbody>
-			</table>
+		<div class="col-12 p-3 mt-5">
+			<div class="card">
+				<div class="card-header">
+					<h4 class="card-title">Reporte Académico</h4>
+					<h6 class="card-subtitle">Desde esta sección podrás descargar un completo reporte de las postulaciones
+						generadas con tu usarios, full documentación desde: <a href="https://datatables.net/">Datatables</a>
+					</h6>
+					<div class="button-card">
+						<a class="icon show" href="#" data-bs-toggle="dropdown" aria-expanded="true"><i
+								class="bi bi-three-dots foo-lg"></i></a>
+						<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" data-popper-placement="top-end"
+							style="position: absolute; inset: auto 0px 0px auto; margin: 0px; transform: translate3d(0px, -24.7706px, 0px);">
+							<li class="dropdown-header text-start">
+								<h6>Acciones</h6>
+							</li>
+							<li><a class="dropdown-item" href="#">Today</a></li>
+							<li><a class="dropdown-item" href="#">This Month</a></li>
+							<li><a class="dropdown-item" href="#">This Year</a></li>
+						</ul>
+					</div>
+				</div><!--./card-header-->
+				<div class="card-body">
+					<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped table-hover row-border hover">
+						<thead>
+							<tr>
+								<th scope="col"><input type="checkbox" name="id" (click)="checkuncheckall()"></th>
+								<th scope="col">#ID</th>
+								<th scope="col">Name</th>
+								<th scope="col">User name</th>
+								<th scope="col">Email</th>
+								<th scope="col">Website</th>
+								<th scope="col">Profesión</th>
+								<th scope="col">Acciones</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let User of AllUserApi; let i = index">
+								<th scope="row">
+									<input type="checkbox" class="checkboxCls" name="id" [checked]="isChecked" value="{{ User.id }}">
+								</th>
+								<td>{{ User.id }}</td>
+								<td><div class="widget-26-job-emp-img">
+									<img class="rounded-circle" src="./assets/images/avatars/avatar9.png" alt="Company" style="width: 34px;height: 34px;" />
+								</div></td>
+								<td>{{ User.name }}</td>
+								<td>{{ User.username }}</td>
+								<td>{{ User.email }}</td>
+								<td>{{User.website }}</td>
+								<td>
+									<ul class="list-inline mb-0">
+										<li class="list-inline-item">
+											<a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"
+												class="px-2 text-primary" (click)="editUser(i, User.id)"><i class="bx bx-pencil font-size-18"></i></a>
+										</li>
+										<li class="list-inline-item">
+											<a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"
+												class="px-2 text-danger" (click)="deleteUser(i, User.id )"><i class="bx bx-trash-alt font-size-18"></i></a>
+										</li>
+										<li class="list-inline-item dropdown">
+											<a class="text-muted dropdown-toggle font-size-18 px-2" href="#" role="button" data-bs-toggle="dropdown"
+												aria-haspopup="true"><i class="bx bx-dots-vertical-rounded"></i></a>
+											<div class="dropdown-menu dropdown-menu-end">
+												<a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Another
+													action</a><a class="dropdown-item" href="#">Something else here</a>
+											</div>
+										</li>
+									</ul>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div><!--./card-body-->
+			</div><!--./card-->
+		</div>
+		<div class="col-12 my-3">			 
+			<button class="btn btn-primary my-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
+				aria-expanded="false" aria-controls="collapseExample">
+				Carga de datos json
+			</button>
+
+			<div class="collapse" id="collapseExample">
+				<div class="card card-body"> 
+						<pre>{{ isChecked }}</pre>
+						<pre class="p-3"><code> {{ AllUserApi | json}} </code></pre>					 
+				</div>
+			</div>
+			
 		</div>
 	</div>
 </div>

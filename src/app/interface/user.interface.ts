@@ -7,6 +7,7 @@ export interface Usuario {
     phone:    string;
     website:  string;
     company:  Company;
+		checked?: boolean;
 }
 
 export interface Address {

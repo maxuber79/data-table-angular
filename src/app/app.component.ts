@@ -1,6 +1,7 @@
 import { Component, OnInit, VERSION, OnDestroy} from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 /* @Services */
 import { ServicesService } from '../app/services.service'
 
@@ -18,17 +19,27 @@ export class AppComponent implements OnInit, OnDestroy {
 
 	public nameVersion = 'Angular ' + VERSION.full;
   title = 'testDataTable';
-	/* variables dataTable */
-	dtOptions: DataTables.Settings = {};
+
+	/*
+	*@Table variables
+	*/
+	public dtOptions: DataTables.Settings = {};
+	public dtTrigger: any = new Subject<void>();
 	//dtTrigger: any = new Subject<void>();
-	dtTrigger: any = new Subject<void>();
 
-
+	/*
+	*@Checkbox variables
+	*/
+	public isChecked = false;
+	public selectedUser: boolean = false;
+	selectedAll: any;
+	checked: boolean = false;
+	/*
+	*@Services variables
+	*/
 
   public allUsersDummy: DummyDocente[] = [];	
 	public usersLenght: DummyDocente[] = [];
-
-
 	public AllUserApi: Usuario[] = [];
 
 	constructor(
@@ -38,6 +49,17 @@ export class AppComponent implements OnInit, OnDestroy {
 		console.log('%cconstructor() >>>','background: #d1e7dd; color: #0f5132; padding: 2px 5px;');	
 				
 	}
+
+	 
+  checkuncheckall() {   
+    if (this.isChecked == true) {
+       $('.checkboxCls').prop('checked', false);
+      this.isChecked = false;
+    } else {
+       $('.checkboxCls').prop('checked', true);
+      this.isChecked = true;
+    }
+  }
 
 	ngOnInit(): void {
 		console.log('%cngOnInit() >>>','background: #d1e7dd; color: #0f5132; padding: 2px 5px;');
@@ -92,6 +114,18 @@ export class AppComponent implements OnInit, OnDestroy {
     	complete: () => console.log('%cHTTP request completed.','background: #d1e7dd; color: #0f5132; padding: 2px 5px;')
 		});
 	}
+
+	//checkAllCheckBox(ev) { // Angular 9
+  checkAllCheckBox(ev: any) { // Angular 13
+		this.AllUserApi.forEach( x => x.checked = ev.target.checked);
+		console.log(this.checked);
+	}
+
+	isAllCheckBoxChecked() {
+		return this.AllUserApi.every( p => p.checked);
+		console.log( this.checked);
+	}
+ 
 }
 
 
