@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, VERSION, OnDestroy} from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 /* @Services */
 import { ServicesService } from '../app/services.service'
 
 /* @interfaces */
 import { DummyDocente } from '../app/interface/list-users.interface';
-
+import { Usuario } from '../app/interface/user.interface';
 
 
 @Component({
@@ -14,36 +14,93 @@ import { DummyDocente } from '../app/interface/list-users.interface';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
+
+	public nameVersion = 'Angular ' + VERSION.full;
   title = 'testDataTable';
+	/* variables dataTable */
 	dtOptions: DataTables.Settings = {};
+	//dtTrigger: any = new Subject<void>();
+	dtTrigger: any = new Subject<void>();
+
+
+
   public allUsersDummy: DummyDocente[] = [];	
 	public usersLenght: DummyDocente[] = [];
 
+
+	public AllUserApi: Usuario[] = [];
+
 	constructor(
-		private router: Router,
-		private services: ServicesService, 
+		private router: Router, private services: ServicesService
 		 
 	 ) {
-		console.log('%c[DEBUG]: constructor()','background: rgba(69, 255, 111, .5); color: #FFFFFF; padding: 2px 5px;');		
+		console.log('%cconstructor() >>>','background: #d1e7dd; color: #0f5132; padding: 2px 5px;');	
+				
 	}
 
 	ngOnInit(): void {
-		console.log('%c[DEBUG]: ngOnInit()','background: rgba(69, 255, 111, .5); color: #FFFFFF; padding: 2px 5px;');
-    this.dtOptions = {
-      pagingType: 'full_numbers'
-    };
+		console.log('%cngOnInit() >>>','background: #d1e7dd; color: #0f5132; padding: 2px 5px;');
+			this.dtOptions = {					
+				pagingType: 'full_numbers',
+				pageLength: 2,
+				lengthMenu : [2, 10, 25],
+				processing: true,
+				language: {
+					url: '../../../assets/lang/es-CL.json'
+				}
+			};   
+			 this.getAllUsers(); 
+			 
 
-		this.services.getDummyDocentes().subscribe(
-			(data: any) => {
-				this.allUsersDummy = data.users;
-				 console.log('%c[DEBUG] Data de la tabla input this.allUsersDummy >>>>>>>>>>', 'background: #28a745; color: #FFFFFF; padding: 2px 5px;', data.users);
-				 	this. usersLenght = data.users.length
-				 console.log('%c[DEBUG] Data de la tabla input this.collectionSize >>>>>>>>>>', 'background: #0dcaf0; color: #FFFFFF; padding: 2px 5px;', this.allUsersDummy);
-			},
-			(error) => {
-				console.log(error);
-			}
-		); 
+		 /* this.services.getUsersApi('users').subscribe({
+			next: (response: Usuario[]) => {
+				this.AllUserApi = (response as any);
+				console.log('%c[DEBUG] Data getUsersApi() >>>', 'background:  #cff4fc; color:#084298; padding: 2px 5px;', this.AllUserApi);
+				// Calling the DT trigger to manually render the table         
+  			this.dtTrigger.next(); 
+			 },
+			error: (err: Error) => console.error('%cHTTP Error','background: #f8d7da; color: #842029; padding: 2px 5px;', err),
+    	complete: () => console.log('%cHTTP request completed.','background: #d1e7dd; color: #0f5132; padding: 2px 5px;')
+		}); */
+	
+
+		//this.getAllUsers();
   }
+
+	ngOnDestroy(): void {
+   console.log('%cngOnDestroy() >>>','background: #d1e7dd; color: #0f5132; padding: 2px 5px;');
+	 this.dtTrigger.unsubscribe();
+  }
+
+	editUser(index: number, userId: any) {
+		console.log('%c[DEBUG]: Info usuario para Edit','background: #0d6efd; color: #FFFFFF; padding: 2px 5px;','Info Index >>',index,'Info userID >>', userId)
+	}
+	deleteUser(index: number, userId: any) {
+		console.log('%c[DEBUG]: Info usuario para Delete','background: #6610f2; color: #FFFFFF; padding: 2px 5px;','Info Index >>', index,'Info userID >>', userId);
+	}
+
+	getAllUsers() {
+		this.services.getUsersApi('users').subscribe({
+			next: (response: Usuario[]) => {
+				this.AllUserApi = (response as any);
+				console.log('%c[DEBUG] Data getUsersApi() >>>', 'background:  #cff4fc; color:#084298; padding: 2px 5px;', this.AllUserApi);
+				// Calling the DT trigger to manually render the table         
+  			this.dtTrigger.next(); 
+			 },
+			error: (err: Error) => console.error('%cHTTP Error','background: #f8d7da; color: #842029; padding: 2px 5px;', err),
+    	complete: () => console.log('%cHTTP request completed.','background: #d1e7dd; color: #0f5132; padding: 2px 5px;')
+		});
+	}
 }
+
+
+
+
+
+
+
+function ngOnInit() {
+	throw new Error('Function not implemented.');
+}
+
