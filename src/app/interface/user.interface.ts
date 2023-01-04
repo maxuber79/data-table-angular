@@ -7,7 +7,7 @@ export interface Usuario {
     phone:    string;
     website:  string;
     company:  Company;
-		checked?: boolean;
+		selected?: boolean;
 }
 
 export interface Address {

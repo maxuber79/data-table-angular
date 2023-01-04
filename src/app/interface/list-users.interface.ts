@@ -18,6 +18,7 @@ export interface DummyDocente {
 	typeDay?: string;
 	EscCarrNucl?: string;
 	funcion?: string;
+	selected?: boolean;
 }
 
 export enum Company {
